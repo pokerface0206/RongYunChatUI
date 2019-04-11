@@ -1,0 +1,68 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>消息</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="css/common.css" />
+		<link rel="stylesheet" type="text/css" href="css/msg.css" />
+	</head>
+	<body>
+
+		<header class="mui-bar mui-bar-nav header-blue">
+			<h1 class="mui-title">消息</h1>
+		</header>
+		<div id="app">
+			<div class="mui-slider-group">
+				<div id="item2" class="mui-slider-item mui-control-content mui-active chat-item-box">
+					<ul class="mui-table-view">
+						<li class="mui-table-view-cell chat-item" v-for="(it, index) in chatList" @click="toChatWindow(it)">
+							<p v-text="it.name"></p>
+							<span class="mui-badge mui-badge-primary">12</span>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		<script src="js/mui.js"></script>
+		<script src="js/vue.min.js"></script>
+		<script type="text/javascript">
+			mui.init({
+				swipeBack: false, //启用右滑关闭功能,
+				keyEventBind: {
+					backbutton: false //关闭back按键监听
+				},
+			});
+			var app = new Vue({
+				el: "#app",
+				data: {
+					chatList: [
+						{
+							name: "团队1",
+							id: 0
+						},
+						{
+							name: "团队2",
+							id: 1
+						}
+					]
+				},
+				methods:{
+					toChatWindow: function(it){
+						var chatWindow = plus.webview.create("./chatWindow.html", "chatWindow", {}, {
+							chatId: it
+						});
+						plus.webview.show(chatWindow, "slide-in-right", 300)
+					}
+				}
+			})
+			mui.plusReady(function () {
+			    
+			})
+		</script>
+	</body>
+
+</html>

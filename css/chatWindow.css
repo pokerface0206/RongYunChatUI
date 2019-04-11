@@ -1,0 +1,181 @@
+@charset "utf-8";
+
+.chat-content-box{
+	width: 100%;
+	padding-left: 5%;
+	padding-right: 5%;
+	overflow: scroll;
+}
+
+.footer-content{
+	height: 50px;
+	line-height: 50px;
+	display: flex;
+	position: fixed;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	width: 100%;
+	background: #e4e4e4;
+	border-top: 1px solid #33CCCC;
+}
+.voice-icon{
+	width: 40px;
+	text-align: center;
+}
+.input-content{
+	width: calc( 100% - 90px );
+}
+.more-menu{
+	width: 50px;
+	text-align: center;
+}
+.input-content textarea{
+	height: 40px;
+	margin: 5px 0 0 0;
+}
+.hold-to-speak{
+	height: 40px;
+	line-height: 40px;
+	font-size: 14px;
+	text-align: center;
+	width: 100%;
+	background: white;
+	margin-top: 5px;
+	padding: 0;
+}
+
+.more-menu span{
+	font-size: 14px;
+	color: #0066FF;
+}
+
+.more-box{
+	background: #e4e4e4;
+	width: 100%;
+	height: 120px;
+	display: flex;
+	flex-wrap: wrap;
+	position: absolute;
+	bottom: 0;
+}
+
+.item-box{
+	width: 25%;
+}
+.item-icon-box{
+	background: white;
+	width: 50px;
+	height: 50px;
+	text-align: center;
+	margin-left: calc(50% - 25px);
+	margin-top: 10px;
+	border-radius: 10px;
+}
+.item-box img{
+	width: 30px;
+	margin-top: 10px;
+}
+.item-box p{
+	font-size: 14px;
+	text-align: center;
+	line-height: 40px;
+}
+
+.item-icon{
+	height: 50px;
+    width: 50px;
+    border-radius: 10px;
+    border: 0;
+	padding: 0;
+    margin: 0;
+}
+
+.mui-table-view:before{
+	height: 0;
+	top: 0;
+}
+.mui-table-view:after{
+	height: 0;
+}
+.mui-active{
+	background: #669999!important;
+}
+
+.microphone{
+	width: 100px;
+	height: 100px;
+	background: black;
+	opacity: 0.5;
+	z-index: 999;
+	position: absolute;
+	top: 200px;
+	left: calc(50% - 50px);
+	border-radius: 10px;
+	text-align: center;
+}
+.microphone img{
+	width: 40px;
+	margin-top: 10px;
+}
+.microphone p{
+	font-size: 24px;
+	color: white;
+	margin-top: 10px;
+}
+
+/* 聊天内容界面 */
+.sender-box{
+	display: flex;
+}
+.sender-box-self{
+	display: flex;
+	flex-direction: row-reverse;
+}
+
+.sender-name{
+	font-size: 13px;
+	margin: 5px 0 0 5px;
+	padding: 0;
+}
+.sender-name-self{
+	font-size: 13px;
+	margin: 5px 5px 0 0;
+	padding: 0;
+	text-align: right;
+}
+.sender-box div{
+	width: 50px;
+}
+.sender-box img{
+	width: 40px;
+}
+
+.sender-box p{
+	max-width: calc(100% - 100px);
+    line-height: 40px;
+    font-size: 14px;
+    background: gray;
+    border-radius: 10px;
+    color: white;
+    height: 40px;
+    padding: 0 10px 0 10px;
+}
+
+.sender-box-self div{
+	width: 50px;
+	text-align: right;
+}
+.sender-box-self img{
+	width: 40px;
+}
+.sender-box-self p{
+	max-width: calc(100% - 100px);
+    line-height: 40px;
+    font-size: 14px;
+    background: gray;
+    border-radius: 10px;
+    color: white;
+    height: 40px;
+    padding: 0 10px 0 10px;
+}

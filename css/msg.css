@@ -1,0 +1,36 @@
+@charset "utf-8";
+
+
+#app{
+	margin-top: 45px;
+}
+
+.inform{
+	width: 100%;
+}
+.inform img{
+	width: 40px;
+}
+.inform p:nth-child(2){
+	width: 50%;
+	padding-left: 15px;
+	font-size: 18px;
+	line-height: 40px;
+}
+.inform p:nth-child(3){
+	width: calc(50% - 40px);
+	text-align: right;
+	line-height: 40px;
+	font-size: 14px;
+}
+
+.chat-item{
+	height: 60px;
+}
+.chat-item p{
+	line-height: 40px;
+	padding: 0;
+	margin: 0;
+	font-size: 16px;
+	padding-left: 20px;
+}

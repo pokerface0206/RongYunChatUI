@@ -1,0 +1,333 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>聊天窗口</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="css/common.css" />
+		<link rel="stylesheet" type="text/css" href="css/chatWindow.css" />
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav header-blue">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title bind-title" id="chatNameDom"></h1>
+		</header>
+
+		<div id="app">
+			<div class="chat-content-box" id="chatContentBox">
+				<div v-for="(it, index) in chatList">
+					<div v-if="it.senderId != chatUserId">
+						<p class="sender-name" v-text="it.senderName"></p>
+						<div class="sender-box">
+							<div>
+								<img src="img/huanzhe.png">
+							</div>
+							<p v-text="it.content"></p>
+						</div>
+					</div>
+
+					<div v-if="it.senderId == chatUserId">
+						<p class="sender-name-self" v-text="it.senderName"></p>
+						<div class="sender-box-self">
+							<div>
+								<img src="img/yisheng.png">
+							</div>
+							<p v-text="it.content"></p>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="footer-content" id="footerContent">
+				<div class="voice-icon" id="voiceIconBox" style="display: block;">
+					<i class="mui-icon mui-icon-mic"></i>
+				</div>
+
+				<div class="voice-icon" id="textIconBox" style="display: none;">
+					<i class="mui-icon mui-icon-compose"></i>
+				</div>
+
+				<div class="input-content">
+					<textarea name="msgContent" id="messageCon" cols="20" rows="1" style="display: block;"></textarea>
+					<button type="button" id="holdToSpeak" class="mui-btn mui-btn-outlined hold-to-speak" style="display: none;">按住说话</button>
+				</div>
+				<div class="more-menu" id="moreIcon" style="display: block;">
+					<i class="mui-icon mui-icon-plus"></i>
+				</div>
+				<div class="more-menu" id="sendBtn" style="display: none;">
+					<span>发送</span>
+				</div>
+			</div>
+
+			<div class="more-box" id="morBox" style="display: none;">
+				<div class="item-box">
+					<ul class="mui-table-view item-icon-box">
+						<li class="mui-table-view-cell item-icon">
+							<img src="img/paizhao.png">
+						</li>
+					</ul>
+					<p>拍照</p>
+				</div>
+
+				<div class="item-box">
+					<ul class="mui-table-view item-icon-box">
+						<li class="mui-table-view-cell item-icon">
+							<img src="img/xiangce.png">
+						</li>
+					</ul>
+					<p>相册</p>
+				</div>
+
+				<div class="item-box">
+					<ul class="mui-table-view item-icon-box">
+						<li class="mui-table-view-cell item-icon">
+							<img src="img/yuyinliaotian.png">
+						</li>
+					</ul>
+					<p>语音聊天</p>
+				</div>
+
+				<div class="item-box">
+					<ul class="mui-table-view item-icon-box">
+						<li class="mui-table-view-cell item-icon">
+							<img src="img/shipinliaotian.png">
+						</li>
+					</ul>
+					<p>视频</p>
+				</div>
+			</div>
+
+			<div class="microphone" id="microphoneBox" style="display: none;">
+				<img src="img/microphone.png">
+				<p id="microphoneNum">60</p>
+			</div>
+
+			<div class="microphone" id="microphoneBoxShort" style="display: none;">
+				<img src="img/jinggao.png">
+				<p style="font-size: 14px;">录音时间太短</p>
+			</div>
+
+		</div>
+
+
+
+		<script src="js/mui.js"></script>
+		<script src="js/vue.min.js"></script>
+		<script type="text/javascript">
+			mui.init({
+				swipeBack: false, //启用右滑关闭功能
+				beforeback: function() {
+
+				},
+				gestureConfig: {
+					tap: true, //默认为true
+					longtap: true, //默认为false
+					hold: true, //默认为false，不监听
+					release: true //默认为false，不监听
+				}
+			});
+
+			var app = new Vue({
+				el: "#app",
+				data: {
+					chatUserId: 1,
+					chatUserName: "爸爸",
+					chatList: [{
+							senderName: "亮亮",
+							senderId: 2,
+							content: "爸爸我饿了"
+						},
+						{
+							senderName: "爸爸",
+							senderId: 1,
+							content: "乖，爸爸带你吃东西"
+						}
+
+					]
+				},
+				methods: {
+
+				}
+			});
+
+			var messageCon = document.getElementById("messageCon"); // 输入框
+			var moreIcon = document.getElementById("moreIcon"); // 更多 按钮
+			var sendBtn = document.getElementById("sendBtn"); // 发送按钮
+			var morBox = document.getElementById("morBox"); // 更多区域
+			var chatContentBox = document.getElementById("chatContentBox"); // 聊天内容区域
+			var voiceIconBox = document.getElementById("voiceIconBox"); // 语音输入
+			var holdToSpeak = document.getElementById("holdToSpeak"); // 按住说话
+			var textIconBox = document.getElementById("textIconBox"); // 点击切换到编辑文本
+			var microphoneBox = document.getElementById("microphoneBox"); // 麦克风提示框
+			var microphoneNum = document.getElementById("microphoneNum"); // 语音输入倒计时
+			var microphoneBoxShort = document.getElementById("microphoneBoxShort"); // 录音时间太短
+			var footerContent = document.getElementById("footerContent"); // 底部输入块
+
+			mui.plusReady(function() {
+				chatWindowInit();
+			});
+			// 初始化
+			function chatWindowInit() {
+				// 显示聊天对象
+				var ws = plus.webview.currentWebview();
+				// console.log(ws.chatId.name);
+				document.getElementById("chatNameDom").innerHTML = ws.chatId.name
+
+				// 获取窗口高度并设置聊天内容显示区域的大小
+				chatContentBox.style.maxHeight = plus.screen.resolutionHeight - 45 - 75 + "px";
+				chatContentBox.scrollTop = chatContentBox.scrollHeight;
+
+				// 底部输入块的位置
+				// setFooterTop();
+			};
+
+			// 底部输入块的位置
+// 			function setFooterTop() {
+// 				// 底部输入块的margin-top = 全屏高度 - 聊天内容块的高度 - header - 本身的高度
+// 				if (chatContentBox.offsetHeight < plus.screen.resolutionHeight - 45 - 75) {
+// 					footerContent.style.marginTop = plus.screen.resolutionHeight - chatContentBox.offsetHeight - 75 - 45 + "px"
+// 				} else {
+// 					footerContent.style.marginTop = 0;
+// 				}
+// 			}
+
+			// 监听输入框   改变发送与更多切换
+			messageCon.addEventListener("input", function() {
+				if (messageCon.value == "") {
+					moreIcon.style.display = "inline-block";
+					sendBtn.style.display = "none";
+				} else {
+					moreIcon.style.display = "none";
+					sendBtn.style.display = "block";
+				}
+			   
+			}, {
+				passive: false
+			})
+
+			// 监听输入框获取到焦点的时候, 固定输入框的位置
+			messageCon.addEventListener("focus", function() {
+				
+			}, {
+				passive: false
+			})
+
+			// 监听发送按钮
+			sendBtn.addEventListener("tap", function() {
+				var obj = {
+					senderId: app.chatUserId,
+					senderName: app.chatUserName,
+					content: messageCon.value
+				};
+				app.chatList.push(obj);
+				messageCon.value = "";
+				messageCon.blur();
+				moreIcon.style.display = "inline-block";
+				sendBtn.style.display = "none";
+				window.setTimeout(function() {
+					chatContentBox.scrollTop = chatContentBox.scrollHeight;
+				}, 100)
+			}, {
+				passive: false
+			})
+
+			// 监听更多按钮事件,打开更多功能
+			moreIcon.addEventListener("tap", function() {
+				if (morBox.style.display == "none") {
+					// 打开更多功能
+					morBox.style.display = "flex";
+					chatContentBox.style.height = plus.screen.resolutionHeight - 45 - 185 + "px";
+					footerContent.style.bottom = 115 + "px";
+				} else {
+					// 隐藏更多功能
+					morBox.style.display = "none";
+					chatContentBox.style.height = plus.screen.resolutionHeight - 45 - 75 + "px";
+					footerContent.style.bottom = 0;
+				}
+				
+				// 判断输入框是否为获取焦点状态
+				if (messageCon == document.activeElement) {
+					messageCon.blur();
+				}
+			}, {
+				passive: false
+			})
+
+			// 输入框获取焦点的时候,弹出软键盘,隐藏更多功能
+			messageCon.addEventListener("focus", function() {
+				morBox.style.display = "none";
+				document.getElementById("chatContentBox").style.height = plus.screen.resolutionHeight - 45 - 75 + "px";
+				footerContent.style.bottom = 0;
+
+			}, {
+				passive: false
+			});
+
+			// 点击聊天内容区域 使输入框失去焦点  隐藏更多功能选择区域
+			chatContentBox.addEventListener("tap", function() {
+				messageCon.blur(); // 输入框失去焦点
+				// 隐藏更多功能选择区域
+				morBox.style.display = "none";
+				document.getElementById("chatContentBox").style.height = plus.screen.resolutionHeight - 45 - 75 + "px";
+				footerContent.style.bottom = 0;
+
+			})
+
+			// textIconBox   voiceIconBox
+			// 点击发送语音按钮
+			voiceIconBox.addEventListener("tap", function() {
+				voiceIconBox.style.display = "none";
+				textIconBox.style.display = "block";
+				messageCon.style.display = "none";
+				holdToSpeak.style.display = "block";
+			}, {
+				passive: false
+			});
+
+			// 点击文本编辑按钮
+			textIconBox.addEventListener("tap", function() {
+				voiceIconBox.style.display = "block";
+				textIconBox.style.display = "none";
+				messageCon.style.display = "block";
+				holdToSpeak.style.display = "none";
+			}, {
+				passive: false
+			})
+
+			// 长按 "按住说话" 按钮
+			var voiceTime
+			holdToSpeak.addEventListener("hold", function() {
+				microphoneBox.style.display = "block";
+				microphoneNum.innerHTML = "60";
+				voiceTime = window.setInterval(function() {
+					if (microphoneNum.innerHTML == 0) {
+						microphoneBox.style.display = "none";
+						window.clearInterval(voiceTime);
+						// todo  直接发送消息
+
+					} else {
+						microphoneNum.innerHTML = microphoneNum.innerHTML - 1;
+					}
+				}, 1000)
+			});
+
+			// 松开 "按住说话" 按钮
+			holdToSpeak.addEventListener("release", function() {
+				microphoneBox.style.display = "none";
+				window.clearInterval(voiceTime);
+				if (microphoneNum.innerHTML >= 60) {
+					microphoneBoxShort.style.display = "block"
+					var voiceShort = window.setTimeout(function() {
+						microphoneBoxShort.style.display = "none";
+					}, 1000)
+				} else {
+					microphoneBoxShort.style.display = "none"
+				}
+			});
+		</script>
+	</body>
+
+</html>
