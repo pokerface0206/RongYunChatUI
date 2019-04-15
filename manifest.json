@@ -47,7 +47,10 @@
         },
         "Barcode" : {
             "description" : "二维码"
-        }
+        },
+		"Audio": {
+			"description": "音频"
+		}
     },
     "plus" : {
         "splashscreen" : {

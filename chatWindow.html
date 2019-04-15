@@ -152,6 +152,10 @@
 
 				}
 			});
+			
+			var audioObj = null; // 录音对象
+			var playAudio = null; // 播放语音对象
+			var audioPath = null; // 录音路径
 
 			var messageCon = document.getElementById("messageCon"); // 输入框
 			var moreIcon = document.getElementById("moreIcon"); // 更多 按钮
@@ -180,20 +184,11 @@
 				chatContentBox.style.maxHeight = plus.screen.resolutionHeight - 45 - 75 + "px";
 				chatContentBox.scrollTop = chatContentBox.scrollHeight;
 
-				// 底部输入块的位置
-				// setFooterTop();
+				// 初始化录音
+				audioObj = plus.audio.getRecorder();
 			};
 
-			// 底部输入块的位置
-// 			function setFooterTop() {
-// 				// 底部输入块的margin-top = 全屏高度 - 聊天内容块的高度 - header - 本身的高度
-// 				if (chatContentBox.offsetHeight < plus.screen.resolutionHeight - 45 - 75) {
-// 					footerContent.style.marginTop = plus.screen.resolutionHeight - chatContentBox.offsetHeight - 75 - 45 + "px"
-// 				} else {
-// 					footerContent.style.marginTop = 0;
-// 				}
-// 			}
-
+			
 			// 监听输入框   改变发送与更多切换
 			messageCon.addEventListener("input", function() {
 				if (messageCon.value == "") {
@@ -204,13 +199,6 @@
 					sendBtn.style.display = "block";
 				}
 			   
-			}, {
-				passive: false
-			})
-
-			// 监听输入框获取到焦点的时候, 固定输入框的位置
-			messageCon.addEventListener("focus", function() {
-				
 			}, {
 				passive: false
 			})
@@ -276,7 +264,6 @@
 
 			})
 
-			// textIconBox   voiceIconBox
 			// 点击发送语音按钮
 			voiceIconBox.addEventListener("tap", function() {
 				voiceIconBox.style.display = "none";
@@ -311,7 +298,21 @@
 					} else {
 						microphoneNum.innerHTML = microphoneNum.innerHTML - 1;
 					}
-				}, 1000)
+				}, 1000);
+				
+				// 开始录音
+				if (audioObj == null) {
+					alert("设备录音异常,请检查是否支持录音功能");
+					return;
+				}
+				audioObj.record({
+					filename: "_doc/audio/"
+				}, function(recordFile) {
+					console.log(recordFile);
+					audioPath = recordFile;
+				}, function(e) {
+					console.log("Audio record failed: " + e.message);
+				});
 			});
 
 			// 松开 "按住说话" 按钮
@@ -326,6 +327,22 @@
 				} else {
 					microphoneBoxShort.style.display = "none"
 				}
+				
+				// 关闭录音
+				audioObj.stop();
+				
+				// 播放录音
+				setTimeout(function(){
+					if (plus.audio == undefined) {
+						alert("播放出错,请检查是否支持播放功能");
+					};
+					playAudio = plus.audio.createPlayer(audioPath);
+					playAudio.play(function() {
+						console.log("Audio play success!");
+					}, function(e) {
+						console.log("Audio play error: " + e.message);
+					});
+				},1000)
 			});
 		</script>
 	</body>
